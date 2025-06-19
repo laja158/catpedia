@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Breed } from '../models/Breed';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatService {
 
-  private API_URL = 'https://api.thecatapi.com/v1/breeds';
-  private API_URL_IMAGE = 'https://api.thecatapi.com/v1/images/search?breed_ids=';
-  private API_KEY = 'live_99Qe4Ppj34NdplyLW67xCV7Ds0oSLKGgcWWYnSzMJY9C0QOu0HUR4azYxWkyW2nr';
+  private API_URL = environment.apiUrlBreeds;
+  private API_URL_IMAGE = environment.apiUrlImages;
+  private API_KEY = environment.apiKey;
 
   constructor(private http: HttpClient) { }
 
