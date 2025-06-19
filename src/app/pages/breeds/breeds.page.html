@@ -1,0 +1,10 @@
+<ion-content>
+  <ion-searchbar placeholder="Buscar raza..." (ionInput)="filterBreeds($event)"></ion-searchbar>
+
+  <div class="card-grid">
+    <app-cat-card
+      *ngFor="let breed of filteredBreeds"
+      [breed]="breed">
+    </app-cat-card>
+  </div>
+</ion-content>

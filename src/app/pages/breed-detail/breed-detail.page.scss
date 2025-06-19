@@ -1,0 +1,19 @@
+.fixed-image {
+  position: sticky;
+  top: 56px;
+  background: white;
+  z-index: 10;
+  text-align: center;
+  padding: 10px;
+
+  img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+}
+
+.scroll-content {
+  --padding-top: 0;
+}

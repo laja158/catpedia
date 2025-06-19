@@ -1,0 +1,20 @@
+<ion-card class="cat-card" (click)="goToDetail()">
+  <div class="image-wrapper">
+    <img *ngIf="breed.image?.url" [src]="breed.image?.url" alt="{{ breed.name }}" />
+  </div>
+
+  <ion-card-content>
+    <h2 class="breed-name">{{ breed.name }}</h2>
+    <div class="breed-info">
+      <div class="info-block">
+        <small>Origen</small>
+        <strong>{{ breed.origin }}</strong>
+      </div>
+      <div class="info-block">
+        <small>Temperamento</small>
+        <strong>{{ getShortTemperament() }}</strong>
+      </div>
+    </div>
+    <div class="see-more">Ver más →</div>
+  </ion-card-content>
+</ion-card>
