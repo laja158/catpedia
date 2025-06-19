@@ -1,0 +1,7 @@
+{
+  "name": "catpedia",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
