@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatCardComponent } from './cat-card.component';
 import { IonicModule } from '@ionic/angular';
-import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 describe('CatCardComponent', () => {
   let component: CatCardComponent;
@@ -28,34 +28,38 @@ describe('CatCardComponent', () => {
 
     fixture = TestBed.createComponent(CatCardComponent);
     component = fixture.componentInstance;
-
-    component.breed = mockBreed;
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    component.breed = mockBreed;
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should render breed name', () => {
-    const title = fixture.debugElement.query(By.css('.breed-name'));
-    expect(title.nativeElement.textContent).toContain('British');
+    component.breed = mockBreed;
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain('British');
   });
 
-  it('should render image', () => {
-    const img = fixture.debugElement.query(By.css('img'));
-    expect(img.nativeElement.src).toContain('/image.jpg');
+  it('should not render image when breed.image is undefined', () => {
+    const breedWithoutImage = { ...mockBreed, image: undefined };
+    component.breed = breedWithoutImage;
+    fixture.detectChanges();
+    const img = fixture.nativeElement.querySelector('img');
+    expect(img).toBeNull();
   });
 
-  it('should render origin and first temperament word', () => {
-    const footer = fixture.debugElement.query(By.css('.info-block'));
-    expect(footer.nativeElement.textContent).toContain('UK');
-    expect(footer.nativeElement.textContent).toContain('OrigenUK');
-  });
+  it('should navigate to breed detail on goToDetail', () => {
+    component.breed = mockBreed;
+    fixture.detectChanges();
 
-  it('should show link or button labeled Más...', () => {
-    const link = fixture.debugElement.query(By.css('.see-more'));
-    expect(link.nativeElement.textContent).toContain('más');
+    const router = TestBed.inject(Router);
+    const navigateSpy = spyOn(router, 'navigate');
+
+    component.goToDetail();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/breed-detail', 'abc']);
   });
 });

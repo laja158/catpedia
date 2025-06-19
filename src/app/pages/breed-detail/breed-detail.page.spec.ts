@@ -3,7 +3,7 @@ import { BreedDetailPage } from './breed-detail.page';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { IonicModule } from '@ionic/angular';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CatService } from 'src/app/core/services/cat.service';
 
@@ -30,8 +30,9 @@ describe('BreedDetailPage', () => {
 
     await TestBed.configureTestingModule({
       declarations: [BreedDetailPage],
-      imports: [IonicModule.forRoot(), HttpClientTestingModule],
+      imports: [IonicModule.forRoot()],
       providers: [
+        provideHttpClientTesting(),
         { provide: CatService, useValue: catServiceSpy },
         {
           provide: ActivatedRoute,
@@ -65,5 +66,27 @@ describe('BreedDetailPage', () => {
     expect(catService.getBreedById).toHaveBeenCalledWith('abc');
     expect(component.breed?.name).toEqual('British Shorthair');
     expect(component.imageUrl).toEqual(mockBreed.image.url);
+  });
+
+  it('should return empty string when no image is found', () => {
+    catService.getBreedById.and.returnValue(of(mockBreed));
+    catService.getBreedImage.and.returnValue(of(''));
+
+    fixture = TestBed.createComponent(BreedDetailPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component.imageUrl).toBe('');
+  });
+
+  it('should handle undefined breed response', () => {
+    catService.getBreedById.and.returnValue(of(undefined));
+    catService.getBreedImage.and.returnValue(of(''));
+
+    fixture = TestBed.createComponent(BreedDetailPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component.breed).toBeUndefined();
   });
 });

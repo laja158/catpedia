@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CatService } from './cat.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CatService', () => {
   let service: CatService;
@@ -17,7 +17,7 @@ describe('CatService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CatService]
+      providers: [CatService],
     });
     service = TestBed.inject(CatService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -53,12 +53,30 @@ describe('CatService', () => {
   });
 
   it('should get breed image', () => {
+    const mockImage = [{ url: 'https://example.com/image.jpg' }];
+
     service.getBreedImage('abc').subscribe((res) => {
-      expect(res).toContain('example.com');
+      expect(res).toBe('https://example.com/image.jpg');
     });
 
-    const req = httpMock.expectOne('https://api.thecatapi.com/v1/images/search?breed_ids=abc');
+    const req = httpMock.expectOne((req) => {
+      return req.urlWithParams === 'https://api.thecatapi.com/v1/images/search?breed_ids=abc';
+    });
+
     expect(req.request.method).toBe('GET');
-    req.flush([{ url: 'https://example.com/image.jpg' }]);
+    req.flush(mockImage);
   });
+
+  it('should return empty string if no image found', () => {
+    service.getBreedImage('abc').subscribe((res) => {
+      expect(res).toBe('');
+    });
+
+    const req = httpMock.expectOne((req) =>
+      req.urlWithParams === 'https://api.thecatapi.com/v1/images/search?breed_ids=abc'
+    );
+
+    req.flush([]); 
+  });
+
 });
