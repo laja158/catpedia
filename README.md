@@ -21,10 +21,10 @@ Se implementaron pruebas unitarias en los servicios y componentes principales, u
 
 | Métrica       | Cobertura |
 |---------------|-----------|
-| Statements    | 94.44 %   |
+| Statements    | 94.87 %   |
 | Branches      | 85.71 %   |
-| Functions     | 90 %      |
-| Lines         | 94.44 %   |
+| Functions     | 90.9 %    |
+| Lines         | 94.73 %   |
 
 ### 🧪 Componentes y servicios cubiertos
 
